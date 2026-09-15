@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#121212">
+  <title>SQM Demo</title>
+  <style>
+    *{box-sizing:border-box}html,body{margin:0;min-height:100%;font-family:Inter,ui-sans-serif,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:#0f0f0f;color:#fff}button,input{font:inherit}.shell{min-height:100vh;background:radial-gradient(900px 420px at 12% -10%,rgba(29,185,84,.18),transparent 60%),linear-gradient(180deg,#101010,#121212 48%,#0d1711)}.top{position:sticky;top:0;z-index:10;background:rgba(18,18,18,.88);backdrop-filter:blur(12px);border-bottom:1px solid #252525}.topin{max-width:1180px;margin:auto;padding:12px 16px;display:flex;gap:12px;align-items:center}.brand{width:38px;height:38px;border-radius:50%;background:#1ed760;display:grid;place-items:center;color:#07140b;font-weight:900;font-size:22px}.search{flex:1;display:flex;gap:8px}.searchbox{flex:1;border:1px solid #303030;background:#1b1b1b;color:#fff;border-radius:999px;padding:11px 16px;outline:none}.searchbox:focus{border-color:#1ed760}.btn{border:0;border-radius:12px;padding:10px 14px;background:#1ed760;color:#07140b;font-weight:800;cursor:pointer}.btn:hover{filter:brightness(1.08)}.btn.ghost{background:#242424;color:#fff;border:1px solid #343434}.wrap{max-width:1180px;margin:auto;padding:18px 16px 36px}.demo-note{display:flex;justify-content:space-between;gap:14px;align-items:center;background:#132117;border:1px solid rgba(30,215,96,.25);border-radius:14px;padding:12px 14px;margin-bottom:16px;color:#d9fbe5}.demo-note small{color:#9edbb3}.layout{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:16px}.hero{margin-bottom:14px}.hero h1{font-size:clamp(28px,5vw,46px);margin:0 0 6px}.hero p{margin:0;color:#aaa}.state{display:none;border:1px dashed #383838;border-radius:14px;padding:28px;text-align:center;color:#999}.state.active{display:block}.grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}.card{background:linear-gradient(180deg,#191919,#202020);border:1px solid #2a2a2a;border-radius:14px;overflow:hidden;transition:.18s transform,.18s border-color}.card:hover{transform:translateY(-2px);border-color:#3a3a3a}.cover{aspect-ratio:1;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-size:44px;font-weight:900;color:rgba(255,255,255,.9);letter-spacing:-.06em}.info{padding:10px 11px 4px}.title{font-weight:800;font-size:14px}.meta{font-size:12px;color:#aaa;margin-top:2px}.actions{padding:8px 10px 11px;display:flex;justify-content:flex-end}.add{border:0;border-radius:9px;background:#1ed760;color:#08130b;font-weight:850;padding:7px 9px;cursor:pointer}.side{background:#181818;border:1px solid #292929;border-radius:14px;padding:12px;position:sticky;top:78px;height:max-content;max-height:calc(100vh - 94px);overflow:auto}.tabs{display:flex;gap:4px;border-bottom:1px solid #2b2b2b;margin-bottom:12px}.tab{background:transparent;border:0;color:#8e8e8e;padding:8px 9px;border-bottom:2px solid transparent;cursor:pointer;font-weight:750}.tab.active{color:#fff;border-bottom-color:#1ed760}.panel{display:none}.panel.active{display:block}.now{background:#111;border-radius:12px;padding:10px;text-align:center}.npcover{aspect-ratio:1;border-radius:10px;background:linear-gradient(135deg,#6554c0,#0d8f6f);display:grid;place-items:center;font-size:54px;font-weight:900;margin-bottom:10px}.now h3{margin:4px 0 2px}.muted{color:#999;font-size:13px}.q{display:flex;flex-direction:column;gap:7px}.qi{display:flex;align-items:center;gap:9px;background:#111;border:1px solid #292929;border-radius:9px;padding:7px}.thumb{width:42px;height:42px;border-radius:7px;background:linear-gradient(135deg,var(--a),var(--b));display:grid;place-items:center;font-weight:900}.qi b{font-size:13px}.qi small{display:block;color:#999;margin-top:2px}.admin{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:12px}.admin button{background:#252525;border:1px solid #343434;color:#fff;border-radius:10px;padding:10px;cursor:pointer}.admin button:hover{background:#303030}.toast{position:fixed;left:50%;bottom:20px;transform:translate(-50%,120%);opacity:0;background:#181818;border:1px solid #333;padding:10px 14px;border-radius:999px;transition:.25s;z-index:20}.toast.show{transform:translate(-50%,0);opacity:1}.badge{display:inline-flex;align-items:center;gap:7px;background:#222;border:1px solid #333;border-radius:999px;padding:6px 9px;font-size:12px;color:#bbb}.dot{width:7px;height:7px;border-radius:50%;background:#1ed760;box-shadow:0 0 0 5px rgba(30,215,96,.08)}@media(max-width:900px){.layout{grid-template-columns:1fr}.side{position:static;max-height:none}.grid{grid-template-columns:repeat(3,minmax(0,1fr))}}@media(max-width:620px){.topin{padding:10px}.brand{width:34px;height:34px}.wrap{padding:14px 10px 30px}.grid{grid-template-columns:repeat(2,minmax(0,1fr))}.demo-note{align-items:flex-start;flex-direction:column}.search .btn{padding-inline:11px}.hero h1{font-size:30px}}@media(max-width:390px){.grid{grid-template-columns:1fr 1fr}.cover{font-size:34px}.title{font-size:13px}}
+  </style>
+</head>
+<body>
+<div class="shell">
+  <header class="top"><div class="topin"><div class="brand">♫</div><form class="search" id="searchForm"><input class="searchbox" id="query" type="search" placeholder="Search songs, artists, albums…" autocomplete="off"><button class="btn" type="submit">Search</button></form></div></header>
+  <main class="wrap">
+    <div class="demo-note"><div><strong>Interactive demo</strong><br><small>No Spotify token, account or backend required. Everything here is simulated locally in your browser.</small></div><span class="badge"><span class="dot"></span> Demo mode</span></div>
+    <div class="hero"><h1>Let guests pick the next track.</h1><p>Search, add a request, inspect the queue and try the organizer controls.</p></div>
+    <div class="layout">
+      <section>
+        <div class="state active" id="empty">Try “midnight”, “summer”, “city” or just press Search.</div>
+        <div class="grid" id="results"></div>
+      </section>
+      <aside class="side">
+        <div class="tabs"><button class="tab active" data-tab="playing">Now</button><button class="tab" data-tab="queue">Queue</button><button class="tab" data-tab="history">Your picks</button></div>
+        <section class="panel active" id="playing"><div class="now"><div class="npcover" id="npCover">SQ</div><h3 id="npTitle">Midnight Drive</h3><div class="muted" id="npArtist">Neon Avenue</div><div class="admin"><button id="prevBtn">↶</button><button id="pauseBtn">Pause</button><button id="nextBtn">Skip</button></div></div></section>
+        <section class="panel" id="queue"><div class="q" id="queueList"></div></section>
+        <section class="panel" id="history"><div class="q" id="historyList"></div><p class="muted" id="historyEmpty">Nothing added yet.</p></section>
+      </aside>
+    </div>
+  </main>
+</div>
+<div class="toast" id="toast"></div>
+<script>
+const tracks=[
+{id:1,title:'Midnight Drive',artist:'Neon Avenue',album:'After Hours',a:'#6554c0',b:'#0d8f6f',mark:'MD'},
+{id:2,title:'Summer Static',artist:'June Arcade',album:'Polaroid Sky',a:'#d66d4c',b:'#f0b35c',mark:'SS'},
+{id:3,title:'City Lights',artist:'Northbound',album:'Glass Streets',a:'#1d5fa7',b:'#6f49aa',mark:'CL'},
+{id:4,title:'Paper Planes',artist:'Velvet Echo',album:'Soft Landing',a:'#be4b73',b:'#7449a8',mark:'PP'},
+{id:5,title:'Golden Hour',artist:'Mira Vale',album:'Daylight',a:'#cb8f35',b:'#7c4b22',mark:'GH'},
+{id:6,title:'Satellite Hearts',artist:'Low Orbit',album:'Signals',a:'#287c73',b:'#18395f',mark:'SH'},
+{id:7,title:'Electric Bloom',artist:'Cassette Garden',album:'Voltage',a:'#b14591',b:'#4a3c9d',mark:'EB'},
+{id:8,title:'Blue Morning',artist:'Harbor Line',album:'Tide',a:'#2c6d91',b:'#56a6a1',mark:'BM'}
+];
+let queue=[tracks[1],tracks[2],tracks[3]], history=[], playing=tracks[0], paused=false;
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+function renderResults(items){$('#empty').classList.toggle('active',!items.length);$('#results').innerHTML=items.map(t=>`<article class="card"><div class="cover" style="--a:${t.a};--b:${t.b}">${t.mark}</div><div class="info"><div class="title">${t.title}</div><div class="meta">${t.artist}<br>${t.album}</div></div><div class="actions"><button class="add" data-id="${t.id}">+ Queue</button></div></article>`).join('');$$('.add').forEach(b=>b.onclick=()=>addTrack(+b.dataset.id));}
+function item(t){return `<div class="qi"><div class="thumb" style="--a:${t.a};--b:${t.b}">${t.mark}</div><div><b>${t.title}</b><small>${t.artist}</small></div></div>`}
+function renderSide(){const q=$('#queueList');q.innerHTML=queue.length?queue.map(item).join(''):'<p class="muted">Queue is empty.</p>';$('#historyList').innerHTML=history.map(item).join('');$('#historyEmpty').style.display=history.length?'none':'block';$('#npTitle').textContent=playing.title;$('#npArtist').textContent=playing.artist;$('#npCover').textContent=playing.mark;$('#npCover').style.background=`linear-gradient(135deg,${playing.a},${playing.b})`;$('#pauseBtn').textContent=paused?'Play':'Pause';}
+function addTrack(id){const t=tracks.find(x=>x.id===id);queue.push(t);history.unshift(t);history=history.slice(0,5);renderSide();toast(`${t.title} added to the queue`);}
+function toast(msg){const t=$('#toast');t.textContent=msg;t.classList.add('show');clearTimeout(window.__tt);window.__tt=setTimeout(()=>t.classList.remove('show'),1800)}
+$('#searchForm').onsubmit=e=>{e.preventDefault();const q=$('#query').value.trim().toLowerCase();const items=!q?tracks:tracks.filter(t=>`${t.title} ${t.artist} ${t.album}`.toLowerCase().includes(q));renderResults(items);if(!items.length)toast('No demo results. Try another search.');};
+$$('.tab').forEach(btn=>btn.onclick=()=>{$$('.tab').forEach(x=>x.classList.remove('active'));$$('.panel').forEach(x=>x.classList.remove('active'));btn.classList.add('active');$('#'+btn.dataset.tab).classList.add('active')});
+$('#pauseBtn').onclick=()=>{paused=!paused;renderSide();toast(paused?'Playback paused':'Playback resumed')};
+$('#nextBtn').onclick=()=>{if(queue.length){playing=queue.shift();paused=false;renderSide();toast(`Now playing ${playing.title}`)}else toast('Queue is empty')};
+$('#prevBtn').onclick=()=>toast('Demo control: previous track');
+renderSide();
+</script>
+</body>
+</html>
