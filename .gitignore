@@ -1,0 +1,9 @@
+spotify_refresh_token.txt
+.env
+.env.*
+node_modules/
+dist/
+.idea/
+__pycache__/
+.wrangler/
+_worker.bundle

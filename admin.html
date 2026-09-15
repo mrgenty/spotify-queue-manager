@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="theme-color" content="#0b0f0c"><title>SQM · Admin</title>
+<style>
+:root{color-scheme:dark;--bg:#0b0f0c;--panel:#171c19;--muted:#9aa69e;--green:#1ed760;--line:#2f3b33;--red:#ff7777;--gold:#e5c982}*{box-sizing:border-box}body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% -10%,#18542e 0,transparent 38%),linear-gradient(145deg,#0a0e0b,#111812 60%,#0a0e0b);color:#fff;font:15px system-ui,sans-serif}.wrap{max-width:1100px;margin:auto;padding:28px}.top{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:26px}.brand{color:var(--green);font-size:24px;font-weight:850;letter-spacing:-.03em}.live{color:var(--green);font-size:11px;font-weight:800;letter-spacing:.1em}.top .live{padding:6px 10px;border:1px solid #235b36;border-radius:999px;background:#12351f}.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}.card{background:linear-gradient(145deg,#1b241eeb,#121713f2);border:1px solid var(--line);border-radius:18px;padding:20px;box-shadow:0 12px 30px #0003}.wide{grid-column:1/-1}.metric{font-size:30px;font-weight:850;letter-spacing:-.05em;margin-top:4px}.muted{color:var(--muted)}button{border:0;border-radius:11px;padding:10px 14px;background:var(--green);color:#07140b;font-weight:800;cursor:pointer;transition:transform .15s,filter .15s}button:hover{transform:translateY(-1px);filter:brightness(1.08)}button.secondary{background:#29322c;color:#fff;border:1px solid #455148}button.danger{background:#8f3030;color:#fff}.actions{display:flex;flex-wrap:wrap;gap:8px}.login{max-width:390px;margin:12vh auto}.login input{width:100%;padding:13px;border:1px solid #445047;background:#0d120f;color:#fff;border-radius:11px;margin:12px 0}.error{color:var(--red);min-height:22px}.section-title{display:flex;justify-content:space-between;align-items:center;gap:10px}.queue{display:grid;gap:9px;margin-top:14px;max-height:460px;overflow:auto;padding-right:3px}.item{display:flex;gap:12px;align-items:center;padding:10px;border-radius:12px;background:#101510;border:1px solid #263129}.item img{width:48px;height:48px;border-radius:8px;object-fit:cover}.item strong,.item span{display:block}.item span{color:var(--muted);font-size:13px}.item a{color:#fff;text-decoration:none}.item a:hover{text-decoration:underline}.notice{margin-top:12px;padding:10px 12px;background:#2b2413;border:1px solid #665124;border-radius:10px;color:var(--gold);font-size:13px}@media(max-width:700px){.wrap{padding:18px 12px}.grid{grid-template-columns:1fr}.wide{grid-column:auto}.top .live{display:none}}
+</style>
+</head>
+<body><main class="wrap">
+<section id="login" class="card login"><h1>Pannello organizzatore</h1><p class="muted">Controlla la serata senza modificare l’esperienza degli ospiti.</p><form id="login-form"><input id="password" type="password" autocomplete="current-password" placeholder="Password admin" required><button type="submit">Accedi</button></form><p id="login-error" class="error" role="alert"></p></section>
+<section id="dashboard" hidden>
+<header class="top"><div><div class="brand">Spotify Queue Manager</div><div class="muted">Pannello organizzatore · aggiornamento automatico</div></div><span class="live">● LIVE CONTROL</span><button class="secondary" id="logout">Esci</button></header>
+<div class="grid">
+<div class="card"><div class="muted">Stato playback</div><div class="metric" id="playing">—</div></div><div class="card"><div class="muted">Brani in coda</div><div class="metric" id="queue-count">—</div></div><div class="card"><div class="muted">Ultimo aggiornamento</div><div class="metric" id="updated">—</div></div>
+<div class="card wide"><div class="section-title"><h2>Controlli riproduzione</h2><span class="live">● LIVE</span></div><div class="actions"><button data-action="play">▶ Riprendi</button><button data-action="pause" class="secondary">Ⅱ Pausa</button><button data-action="next" class="danger">↠ Brano successivo</button><button id="refresh" class="secondary">↻ Aggiorna</button></div><p id="action-message" class="error" role="status"></p></div>
+<div class="card wide"><div class="section-title"><h2>Ora in riproduzione</h2><span class="live">● LIVE</span></div><div id="now" class="muted">Nessun brano</div></div>
+<div class="card wide"><div class="section-title"><h2>Coda Spotify</h2><span class="muted">Aggiornata automaticamente</span></div><div class="notice">Spotify non permette di rimuovere singolarmente brani già presenti nella coda. Usa “Brano successivo” per saltare quello in riproduzione.</div><div id="queue" class="queue"></div></div>
+</div></section></main>
+<script>
+const $=selector=>document.querySelector(selector);
+const login=$('#login');
+const dashboard=$('#dashboard');
+const esc=value=>String(value??'').replace(/[&<>"']/g,char=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+async function api(path,options={}){const response=await fetch('/api/admin/'+path,{...options,headers:{'Content-Type':'application/json',...(options.headers||{})}});const data=await response.json().catch(()=>({}));if(!response.ok)throw Error(data.error||'Operazione non riuscita');return data}
+async function load(){
+  try{
+    const data=await api('status');
+    login.hidden=true;dashboard.hidden=false;
+    $('#playing').textContent=data.isPlaying?'In riproduzione':'In pausa';
+    $('#queue-count').textContent=data.queue.length;
+    $('#updated').textContent=new Date().toLocaleTimeString();
+    $('#now').innerHTML=data.nowPlaying?`<strong>${esc(data.nowPlaying.track)}</strong><span class="muted">${esc(data.nowPlaying.artists)}</span>`:'Nessun brano in riproduzione';
+    const queue=$('#queue');
+    queue.innerHTML='';
+    if(!data.queue.length){queue.innerHTML='<span class="muted">La coda è vuota.</span>';return}
+    data.queue.forEach(track=>{
+      const item=document.createElement('div');item.className='item';
+      const id=(track.uri||'').split(':').pop();
+      const image=/^https:\/\//.test(track.albumCover||'')?`<img src="${esc(track.albumCover)}" alt="" loading="lazy">`:'';
+      item.innerHTML=`${image}<div><a href="https://open.spotify.com/track/${encodeURIComponent(id)}" target="_blank" rel="noopener"><strong>${esc(track.track)}</strong></a><span>${esc(track.artists)}</span></div>`;
+      queue.appendChild(item);
+    });
+  }catch(error){
+    if(error.message.includes('Accesso')){login.hidden=false;dashboard.hidden=true}else $('#action-message').textContent=error.message;
+  }
+}
+$('#login-form').addEventListener('submit',async event=>{event.preventDefault();$('#login-error').textContent='';try{await api('login',{method:'POST',body:JSON.stringify({password:$('#password').value})});$('#password').value='';await load()}catch(error){$('#login-error').textContent=error.message}});
+document.querySelectorAll('[data-action]').forEach(button=>button.addEventListener('click',async()=>{try{await api('action',{method:'POST',body:JSON.stringify({action:button.dataset.action})});$('#action-message').textContent='Operazione eseguita.';await load()}catch(error){$('#action-message').textContent=error.message}}));
+$('#refresh').addEventListener('click',load);$('#logout').addEventListener('click',async()=>{await api('logout',{method:'POST'});login.hidden=false;dashboard.hidden=true});load();setInterval(load,15000);
+</script></body></html>
