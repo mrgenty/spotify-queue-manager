@@ -66,6 +66,9 @@ Configure the following variables in Cloudflare Pages for the required deploymen
 | `ADMIN_PASSWORD` | Recommended | Password for `/admin.html`. Use a long, unique value. |
 | `SPOTIFY_MARKET` | No | ISO 3166-1 alpha-2 market code, for example `IT`. Defaults to `IT`. |
 | `EVENT_NAME` | No | Event name displayed in the welcome flow. |
+| `PAGE_NAME` | No | Browser tab title on the public home (default: `SQM`). |
+| `HOME_ICON_URL` | No | HTTPS URL for the public home header icon and favicon (e.g. `https://miacdn.it/file.png`). |
+| `HOME_COLOR` | No | Dominant home color as a 6-digit HEX code (e.g. `#E65100`), applied to buttons, accents and background gradients. |
 | `GOOGLE_ANALYTICS_ID` | No | Google Analytics measurement ID. Loaded only after consent. |
 | `MAINTENANCE` | No | Set to `TRUE` to serve the maintenance page with HTTP 503. |
 
