@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#121212" />
   <title>SQM</title>
+  <link id="page-icon" rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext x='32' y='48' text-anchor='middle' font-size='48'%3E%E2%99%AB%3C/text%3E%3C/svg%3E" />
   <style>
     *,*::before,*::after{box-sizing:border-box}
     html,body{height:100%}
@@ -23,6 +24,15 @@
     input,button{font:inherit}
     :root{--panel:#181818;--panel-2:#202020;--muted:#b3b3b3;--brand:#1DB954;--brand-2:#1ED760;--radius:14px;--shadow:0 10px 30px rgba(0,0,0,.35)}
 
+    /* Applied only when HOME_COLOR is set; the default Spotify theme stays unchanged. */
+    html.custom-home-color{background:color-mix(in srgb,var(--brand) 10%,#0e0e0e)}
+    .custom-home-color body{
+      background:
+        radial-gradient(1200px 600px at 20% -10%,color-mix(in srgb,var(--brand) 18%,transparent),transparent 60%),
+        radial-gradient(800px 400px at 110% 0%,color-mix(in srgb,var(--brand) 12%,transparent),transparent 60%),
+        linear-gradient(180deg,#0e0e0e 0%,#121212 35%,color-mix(in srgb,var(--brand) 13%,#0e0e0e) 100%);
+    }
+    .custom-home-color .card.added{animation:none;outline:2px solid var(--brand)}
     .container{width:100%;max-width:1200px;margin:0 auto;padding:10px}
     header.appbar{position:sticky;top:0;z-index:50;backdrop-filter:saturate(140%) blur(8px);background:linear-gradient(to bottom, rgba(18,18,18,.95), rgba(18,18,18,.7));border-bottom:1px solid rgba(255,255,255,.06)}
     .appbar-inner{display:flex;gap:10px;align-items:center;padding:8px 10px;flex-wrap:wrap}
@@ -128,7 +138,7 @@
   <header class="appbar">
     <div class="appbar-inner container">
       <a class="brand" id="home-link" href="#" aria-label="Home">
-        <span class="brand-mark" role="img" aria-label="Spotify Queue Manager">♫</span>
+        <span class="brand-mark" id="home-brand-mark" role="img" aria-label="Spotify Queue Manager">♫</span>
       </a>
       <form id="search-form" class="search-form" role="search">
         <div class="searchbar">
@@ -511,6 +521,37 @@
           const response = await fetch('/api/config');
           if (!response.ok) return;
           const config = await response.json();
+          // Optional Cloudflare Pages public branding settings.
+          if (typeof config.pageName === 'string' && config.pageName.trim()) {
+            document.title = config.pageName.trim();
+            document.getElementById('home-link')?.setAttribute('aria-label', config.pageName.trim());
+          }
+          if (typeof config.homeIconUrl === 'string') {
+            try {
+              const icon = new URL(config.homeIconUrl);
+              if (icon.protocol === 'https:') {
+                const favicon = document.getElementById('page-icon');
+                if (favicon) favicon.href = icon.href;
+                const mark = document.getElementById('home-brand-mark');
+                if (mark) {
+                  const img = document.createElement('img');
+                  img.src = icon.href;
+                  img.alt = '';
+                  img.width = 32;
+                  img.height = 32;
+                  img.style.cssText = 'width:32px;height:32px;object-fit:contain';
+                  mark.replaceWith(img);
+                }
+              }
+            } catch { /* Ignore invalid icon URLs and retain the default mark. */ }
+          }
+          if (typeof config.homeColor === 'string' && /^#[0-9a-fA-F]{6}$/.test(config.homeColor)) {
+            const root = document.documentElement;
+            root.style.setProperty('--brand', config.homeColor);
+            root.style.setProperty('--brand-2', 'color-mix(in srgb, ' + config.homeColor + ' 82%, white)');
+            root.classList.add('custom-home-color');
+            document.querySelector('meta[name="theme-color"]')?.setAttribute('content', config.homeColor);
+          }
           const titleElement = document.getElementById('event-title');
           if (titleElement && config.eventName) {
             titleElement.textContent = `Benvenuto a ${config.eventName}!`;
