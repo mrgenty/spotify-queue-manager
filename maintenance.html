@@ -4,8 +4,10 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <meta name="theme-color" content="#121212" />
-  <title>Temporanemente non disponibile</title>
+  <title>__MAINTENANCE_TITLE__</title>
+  <link rel="icon" id="page-icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Ctext y='.9em' font-size='54'%3E%E2%99%AB%3C/text%3E%3C/svg%3E">
   <style>
+    :root { --brand: __MAINTENANCE_COLOR__; }
     *, *::before, *::after {
       box-sizing: border-box;
     }
@@ -25,9 +27,9 @@
       padding: 20px;
       
       background:
-        radial-gradient(1200px 600px at 20% -10%, rgba(29,185,84,.18), rgba(29,185,84,0) 60%),
-        radial-gradient(800px 400px at 110% 0%, rgba(30,215,96,.12), rgba(30,215,96,0) 60%),
-        linear-gradient(180deg, #0e0e0e 0%, #121212 35%, #0f1f15 100%);
+        radial-gradient(1200px 600px at 20% -10%, color-mix(in srgb, var(--brand) 30%, transparent), transparent 60%),
+        radial-gradient(800px 400px at 110% 0%, color-mix(in srgb, var(--brand) 20%, transparent), transparent 60%),
+        linear-gradient(180deg, #0e0e0e 0%, #121212 35%, color-mix(in srgb, var(--brand) 17%, #121212) 100%);
       
       color: #fafafa;
       font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
@@ -51,6 +53,8 @@
       display: block;
     }
 
+    .event-icon { display: block; width: 76px; height: 76px; object-fit: contain; margin: 0 auto 18px; }
+    .event-name { color: var(--brand); font-size: 16px; font-weight: 750; margin-bottom: 12px; overflow-wrap: anywhere; }
     h1 {
       font-size: 24px;
       font-weight: 800;
@@ -71,6 +75,8 @@
   <main>
     <div class="message-card">
       
+      __MAINTENANCE_ICON__
+      <div class="event-name">__MAINTENANCE_EVENT__</div>
       <h1>Servizio momentaneamente non disponibile</h1>
       
       <p>
